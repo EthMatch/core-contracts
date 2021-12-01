@@ -26,6 +26,20 @@ contract Game {
         }
     }
 
+    function createNewAccount() external payable onlyEth {
+        require(!accounts[msg.sender], "Player already exists!");
+
+        accounts[msg.sender] = true;
+        accountBalances[msg.sender] += msg.value;
+    }
+
+    function depositBalances() external payable onlyEth {
+        require(accounts[msg.sender], "Player does not exist!");
+        require(msg.value > 0, "Invalid deposit amount");
+
+        accountBalances[msg.sender] += msg.value;
+    }
+
     function createNewAccount(uint256 _initialDeposit) external onlyERC20 {
         require(!accounts[msg.sender], "Player already exists!");
 
