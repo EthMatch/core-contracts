@@ -26,7 +26,7 @@ contract Game {
         }
     }
 
-    function createNewAccount(uint256 _initialDeposit) external onlyIERC20 {
+    function createNewAccount(uint256 _initialDeposit) external onlyERC20 {
         require(!accounts[msg.sender], "Player already exists!");
 
         accounts[msg.sender] = true;
@@ -35,7 +35,7 @@ contract Game {
         }
     }
 
-    function depositBalances(uint256 _amountIn) external onlyIERC20 {
+    function depositBalances(uint256 _amountIn) external onlyERC20 {
         require(accounts[msg.sender], "Player does not exist!");
         _takeDeposits(msg.sender, _amountIn);
     }
@@ -52,7 +52,7 @@ contract Game {
         _;
     }
 
-    modifier onlyIERC20() {
+    modifier onlyERC20() {
         require(!isEthGame, "You cannot deposit ETH");
         _;
     }
