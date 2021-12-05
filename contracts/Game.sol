@@ -9,6 +9,13 @@ contract Game {
     using SafeERC20 for IERC20;
     using SafeMath for uint256;
 
+    address public governance;
+
+    string public gameTitle;
+    uint256 currentSeason;
+    uint256 public minPlayers;
+    uint256 public maxPlayers;
+
     IERC20 public wantToken;
     bool public isEthGame;
 
@@ -24,6 +31,12 @@ contract Game {
         } else {
             isEthGame = true;
         }
+
+        governance = msg.sender;
+    }
+
+    function newSeason() external onlyGovernance {
+        currentSeason += 1;
     }
 
     function createNewAccount() external payable onlyEth {
@@ -61,6 +74,14 @@ contract Game {
         accountBalances[_depositor] += _amountIn;
     }
 
+    function transferGovernance(address _governance) external onlyGovernance {
+        governance = _governance;
+    }
+
+    function destroyGovernance() external onlyGovernance {
+        governance = address(0x0);
+    }
+
     modifier onlyEth() {
         require(isEthGame, "You cannot deposit IERC20 tokens");
         _;
@@ -68,6 +89,11 @@ contract Game {
 
     modifier onlyERC20() {
         require(!isEthGame, "You cannot deposit ETH");
+        _;
+    }
+
+    modifier onlyGovernance() {
+        require(msg.sender == governance, "Only governance can call");
         _;
     }
 }
