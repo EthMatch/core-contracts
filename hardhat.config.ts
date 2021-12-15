@@ -21,17 +21,22 @@ const config: HardhatUserConfig = {
   solidity: "0.8.4",
   networks: {
     ropsten: {
-      url: process.env.ROPSTEN_URL || "",
+      url: process.env.ROPSTEN_URL || "http://127.0.0.1:8545",
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
+    hardhat: {
+      chainId: 1337,
+    },
+    matic: {
+      url: "https://rpc-mumbai.maticvigil.com/v1/6513fb247c676d70f3d33445ec007f80a71411cc",
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
   },
   gasReporter: {
-    enabled: process.env.REPORT_GAS !== undefined,
+    enabled: true,
     currency: "USD",
-  },
-  etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
   },
 };
 
