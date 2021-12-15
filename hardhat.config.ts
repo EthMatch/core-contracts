@@ -28,9 +28,14 @@ const config: HardhatUserConfig = {
     hardhat: {
       chainId: 1337,
     },
+    matic: {
+      url: "https://rpc-mumbai.maticvigil.com/v1/6513fb247c676d70f3d33445ec007f80a71411cc",
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
   },
   gasReporter: {
-    enabled: process.env.REPORT_GAS !== undefined,
+    enabled: true,
     currency: "USD",
   },
 };
